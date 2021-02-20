@@ -24,13 +24,20 @@ echo json_encode($usuarios);*/
 //$usuário->login("root","!@#$");
 //echo $usuário;
 
-$aluno = new Usuario();
+//Criando um novo usuário
+//$aluno = new Usuario(); //Usando o __construct
 
 //$aluno->setDeslogin("aluno");
 //$aluno->setDessenha("@lun0");
 
-$aluno->insert();
+//$aluno->insert();
+//echo $aluno;
 
-echo $aluno;
+$usuario = new Usuario();
 
+$usuario->loadById(6);
+
+$usuario->update("professor", "98765");
+
+echo $usuario;
 ?>
