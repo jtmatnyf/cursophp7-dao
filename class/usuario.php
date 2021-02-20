@@ -48,12 +48,8 @@ class Usuario{
 		//if(isset($results[0]))
 		if (count($results) > 0){
 
-			$row = $results[0];
+		$this->setData($results[0]);
 
-			$this->setIdusuario($row['idusuario']);
-			$this->setDeslogin($row['deslogin']);
-			$this->setDessenha($row['dessenha']);
-			$this->setDtcadastro(new DateTime($row['dtcadastro']));
 		}
 	}
 
@@ -82,18 +78,43 @@ class Usuario{
 
 		if (count($results) > 0){
 
-			$row = $results[0];
+			//$row = $results[0]; Linha substituida pelo setData abaixo
 
-			$this->setIdusuario($row['idusuario']);
-			$this->setDeslogin($row['deslogin']);
-			$this->setDessenha($row['dessenha']);
-			$this->setDtcadastro(new DateTime($row['dtcadastro']));
-			
-		} else{
+			$this->setData($results[0]);
 
-			throw new Exception("Login e/ou senha inválidos.");
-			
+		} else {
+
+			throw new Exception("Login e/ou senha inválidos.");			
 		}
+	}
+
+	public function setData($data){
+
+			$this->setIdusuario($data['idusuario']);
+			$this->setDeslogin($data['deslogin']);
+			$this->setDessenha($data['dessenha']);
+			$this->setDtcadastro(new DateTime($data['dtcadastro']));
+	}
+
+	public function insert(){
+
+		$sql = new Sql();
+                               //S. procedure. No SQLServer troco o CALL por EXECUTE. É necessário em ambos os casos criar a procedure no banco de dados.
+		$results = $sql->select("CALL sp_usuarios_insert(:LOGIN, :PASSWORD)", array(
+			':LOGIN'=>$this->getDeslogin(),
+			':PASSWORD'=>$this->getDessenha()
+		));
+
+		if (count($results) > 0){
+
+			$this->setData($results[0]);
+		}
+	}
+
+	public function __construct($login = "", $password = ""){
+
+		$this->setDeslogin($login);
+		$this->setDessenha($password);
 	}
 
 	public function __toString(){
@@ -104,7 +125,6 @@ class Usuario{
 			"deslogin"=>$this->getDeslogin(),
 			"dessenha"=>$this->getDessenha(),
 			"dtcadastro"=>$this->getDtcadastro()->format("d/m/Y H:i:s")
-
 		));
 	}
 }

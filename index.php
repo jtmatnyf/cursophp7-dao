@@ -20,9 +20,17 @@ echo json_encode($usuarios);*/
 //echo json_encode($search);
 
 //Carrega um usuário usando o login e a senha
-$usuário = new Usuario();
-$usuário->login("root","!@#$");
-echo $usuário;
+//$usuário = new Usuario();
+//$usuário->login("root","!@#$");
+//echo $usuário;
 
+$aluno = new Usuario();
+
+//$aluno->setDeslogin("aluno");
+//$aluno->setDessenha("@lun0");
+
+$aluno->insert();
+
+echo $aluno;
 
 ?>
